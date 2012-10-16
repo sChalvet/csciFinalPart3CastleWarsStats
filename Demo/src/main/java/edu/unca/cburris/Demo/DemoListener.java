@@ -1,4 +1,4 @@
-package edu.unca.rbruce.Demo;
+package edu.unca.cburris.Demo;
 
 import java.text.MessageFormat;
 
@@ -30,6 +30,11 @@ public class DemoListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.getPlayer().sendMessage(this.plugin.getConfig().getString("sample.message"));
+        //Player p = (Player)sender;
+        //if(p.getResult() != Result.ALLOWED){
+        	//p.setKickMessage("Your player ID is on the ban list for this server");
+        	
+        //}
     }
     
     /*

@@ -1,4 +1,4 @@
-package edu.unca.rbruce.Demo;
+package edu.unca.cburris.Demo;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,11 +9,13 @@ public class Demo extends JavaPlugin {
 	/*
 	 * This is called when your plug-in is enabled
 	 */
+	//NewLogger logger; 
 	@Override
 	public void onEnable() {
 		// save the configuration file
 		saveDefaultConfig();
-
+	    //logger = new NewLogger(this);
+       // logger.info("Plugin enabled");
 		// Create the SampleListener
 		new DemoListener(this);
 
@@ -26,7 +28,9 @@ public class Demo extends JavaPlugin {
 	 */
 	@Override
 	public void onDisable() {
-
+		saveDefaultConfig(); 
+		
+		//log.info("FirstPlugin has been disabled")
 	}
 
 }

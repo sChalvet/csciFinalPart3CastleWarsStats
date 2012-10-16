@@ -16,6 +16,14 @@ permissions:
     default: true
     children:
       demo.message:
-        description: gives permission to set the sample message using the sample command
-      demo.cake:
-        description: give the player a block of cake
+        description: gives permission for sample message using the sample command
+      demo.spider:
+        description: give the player a spider's eye
+      demo.bed:
+        description: teleport to bed
+      demo xp:
+        description: get experience
+      demo.sword:
+        description: obtain sword
+      demo.armor:
+        description: obtain armor
