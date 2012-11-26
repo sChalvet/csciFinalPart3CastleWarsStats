@@ -1,4 +1,4 @@
-package edu.unca.cburris.Demo;
+package edu.unca.cburris.bukkit.accesscontrol;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,14 +20,14 @@ import com.google.common.base.Joiner;
 /*
  * This is a sample CommandExectuor
  */
-public class DemoCommandExecutor implements CommandExecutor {
-	private final Demo plugin;
+public class ACCommandExecutor implements CommandExecutor {
+	private final AccessControl plugin;
 
 	/*
 	 * This command executor needs to know about its plugin from which it came
 	 * from
 	 */
-	public DemoCommandExecutor(Demo plugin) {
+	public ACCommandExecutor(AccessControl plugin) {
 		this.plugin = plugin;
 	}
 

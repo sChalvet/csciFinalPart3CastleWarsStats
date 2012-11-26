@@ -1,11 +1,14 @@
 # This is a sample plugin.yml
 # For more infomration refer to http://wiki.bukkit.org/Plugin_YAML
-main: edu.unca.rbruce.Demo.Demo
-name: Demo
+main: edu.unca.cburris.bukkit.accesscontrol.AccessControl
+name: AccessControl
 version: ${project.version}
-author: SampleAuthor
+author: Charlie Burris
 description: ${project.description}
 commands:
+  ban:
+    description: bans a player from the server
+    usage: /ban <player_name>
   demo:
     description: the based for this plugin
     usage: /<demo> command 
@@ -16,7 +19,7 @@ permissions:
     default: true
     children:
       demo.message:
-        description: gives permission for sample message using the sample command
+        description: gives permission for sample message 
       demo.spider:
         description: give the player a spider's eye
       demo.bed:

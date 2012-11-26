@@ -1,23 +1,26 @@
-package edu.unca.cburris.Demo;
+package edu.unca.cburris.bukkit.accesscontrol;
 
 import java.text.MessageFormat;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 /*
  * This is a sample event listener
  */
-public class DemoListener implements Listener {
-    private final Demo plugin;
+public class ACListener implements Listener {
+    private final AccessControl plugin;
 
     /*
      * This listener needs to know about the plugin which it came from
      */
-    public DemoListener(Demo plugin) {
+    public ACListener(AccessControl plugin) {
         // Register the listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         
@@ -27,14 +30,17 @@ public class DemoListener implements Listener {
     /*
      * Send the sample message to all players that join
      */
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(this.plugin.getConfig().getString("sample.message"));
-        //Player p = (Player)sender;
-        //if(p.getResult() != Result.ALLOWED){
-        	//p.setKickMessage("Your player ID is on the ban list for this server");
-        	
-        //}
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerLogin(PlayerLoginEvent event) {
+       String playerName = event.getPlayer().getName();
+       
+       if(plugin.bannedPlayers.contains(playerName)){
+    	   event.setKickMessage("You are banned from this server!");
+    	   event.setResult(Result.KICK_BANNED);
+    	   
+       }
+       
+       
     }
     
     /*
