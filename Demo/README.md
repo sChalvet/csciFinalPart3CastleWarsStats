@@ -1,4 +1,4 @@
-SampleBukkitPlugin
+AccessControlBukkitPlugin
 ======
 
 This is a sample plug-in for the Bukkit API. It requires a CraftBukkit server.
