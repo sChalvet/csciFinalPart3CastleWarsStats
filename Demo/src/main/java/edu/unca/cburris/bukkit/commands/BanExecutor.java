@@ -22,8 +22,8 @@ public class BanExecutor implements CommandExecutor{
 			sender.sendMessage(ChatColor.RED + "Usage: /ban <player_name>");
 			return true;
 		}
-		
-		if(sender.isOp() != true){
+		/* Check to see if the player trying to use the ban command is a server operator */
+		if(sender.isOp() == false){
 			sender.sendMessage(ChatColor.RED + "You don't have permission to use this command, it can only be used by server operators.");
 			return true;
 		}
@@ -38,7 +38,7 @@ public class BanExecutor implements CommandExecutor{
 			ban.kickPlayer("You've been banned from the server :(");
 		}
 		
-		sender.sendMessage(ChatColor.GREEN + args[0] + " has been banned.");
+		sender.sendMessage(ChatColor.GREEN + args[0] + " has been banned.");  //chat display for server op.
 		return true;
 	}
 }
