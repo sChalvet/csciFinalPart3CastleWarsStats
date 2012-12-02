@@ -6,13 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import edu.unca.cburris.bukkit.accesscontrol.AccessControl;
+import edu.unca.cburris.bukkit.castlewars.CastleWars;
 
 public class BanExecutor implements CommandExecutor{
 	
-	private AccessControl plugin;
+	private CastleWars plugin;
 	
-	public BanExecutor(AccessControl plugin){
+	public BanExecutor(CastleWars plugin){
 		this.plugin = plugin;
 	}
 	

@@ -4,29 +4,12 @@ main: edu.unca.cburris.bukkit.accesscontrol.AccessControl
 name: AccessControl
 version: 1.3
 author: Charlie Burris
-description: AccessControl provides server operators the ability to censor server chat messages and also kick/ban players as needed. This plugin uses ArrayList's for most of the data storage.
+database: true
 commands:
+  stat:
+    description: gets a player's stats from the server
+    usage:
   ban:
     description: bans a player from the server
     usage: /ban <player_name>
-  demo:
-    description: the based for this plugin
-    usage: /<demo> command 
-    permission: demo.*
-permissions:
-  demo.*:
-    description: permissions of all demo plugin commands
-    default: true
-    children:
-      demo.message:
-        description: gives permission for sample message 
-      demo.spider:
-        description: give the player a spider's eye
-      demo.bed:
-        description: teleport to bed
-      demo xp:
-        description: get experience
-      demo.sword:
-        description: obtain sword
-      demo.armor:
-        description: obtain armor
+  

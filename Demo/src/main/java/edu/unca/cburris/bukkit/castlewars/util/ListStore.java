@@ -1,4 +1,4 @@
-package edu.unca.cburris.bukkit.accesscontrol.util;
+package edu.unca.cburris.bukkit.castlewars.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

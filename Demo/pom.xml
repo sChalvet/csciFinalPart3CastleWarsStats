@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>edu.unca.cburris</groupId>
-  <artifactId>AccessControl</artifactId>
+  <artifactId>CastleWarsStats</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>AccessControl</name>
+  <name>CastleWarsStats</name>
   <description>This is a sample plugin for CraftBukkit</description>
 
   <properties>
