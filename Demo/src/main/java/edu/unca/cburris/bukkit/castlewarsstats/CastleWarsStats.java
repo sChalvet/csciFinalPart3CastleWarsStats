@@ -1,4 +1,4 @@
-package edu.unca.cburris.bukkit.castlewars;
+package edu.unca.cburris.bukkit.castlewarsstats;
 
 import java.util.List;
 import java.io.File;
@@ -11,7 +11,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import edu.unca.cburris.bukkit.castlewars.util.ListStore;
+import edu.unca.cburris.bukkit.castlewarsstats.util.ListStore;
 import edu.unca.cburris.bukkit.commands.BanExecutor;
 
 
@@ -19,7 +19,7 @@ import edu.unca.cburris.bukkit.commands.BanExecutor;
 /*
  * This is the main class of the sample plug-in
  */
-public class CastleWars extends JavaPlugin {
+public class CastleWarsStats extends JavaPlugin {
 	/*
 	 * This is called when your plug-in is enabled
 	 */

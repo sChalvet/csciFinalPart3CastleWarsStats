@@ -1,4 +1,4 @@
-package edu.unca.cburris.bukkit.castlewars;
+package edu.unca.cburris.bukkit.castlewarsstats;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -25,14 +25,14 @@ import org.yaml.snakeyaml.Loader;
 import com.avaje.ebean.SqlUpdate;
 import com.avaje.ebeaninternal.server.type.DataBind;
 
-import edu.unca.cburris.bukkit.castlewars.*;
-import edu.unca.cburris.bukkit.castlewars.util.ListStore;
+import edu.unca.cburris.bukkit.castlewarsstats.*;
+import edu.unca.cburris.bukkit.castlewarsstats.util.ListStore;
 
 /*
  * This is a sample event listener
  */
 public class CWSListener implements Listener {
-    private final CastleWars plugin;
+    private final CastleWarsStats plugin;
     private int count, deaths, deathIncrement = 0;
     public ListStore bannedPlayers;
     private Player player;
@@ -42,7 +42,7 @@ public class CWSListener implements Listener {
     /*
      * This listener needs to know about the plugin which it came from
      */
-    public CWSListener(CastleWars plugin) {
+    public CWSListener(CastleWarsStats plugin) {
         // Register the listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         

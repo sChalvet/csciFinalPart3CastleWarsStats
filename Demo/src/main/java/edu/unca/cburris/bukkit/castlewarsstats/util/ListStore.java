@@ -1,4 +1,4 @@
-package edu.unca.cburris.bukkit.castlewars.util;
+package edu.unca.cburris.bukkit.castlewarsstats.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

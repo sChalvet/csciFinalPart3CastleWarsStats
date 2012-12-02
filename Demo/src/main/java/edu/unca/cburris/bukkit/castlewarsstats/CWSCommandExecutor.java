@@ -1,4 +1,4 @@
-package edu.unca.cburris.bukkit.castlewars;
+package edu.unca.cburris.bukkit.castlewarsstats;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,13 +11,13 @@ import org.bukkit.*;
  * This is a sample CommandExectuor
  */
 public class CWSCommandExecutor implements CommandExecutor {
-	private final CastleWars plugin;
+	private final CastleWarsStats plugin;
 
 	/*
 	 * This command executor needs to know about its plugin from which it came
 	 * from
 	 */
-	public CWSCommandExecutor(CastleWars plugin) {
+	public CWSCommandExecutor(CastleWarsStats plugin) {
 		this.plugin = plugin;
 	}
 
