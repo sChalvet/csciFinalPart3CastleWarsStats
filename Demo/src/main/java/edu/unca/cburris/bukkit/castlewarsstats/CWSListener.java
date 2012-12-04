@@ -51,7 +51,7 @@ public class CWSListener implements Listener {
     }
 
     
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+   /* @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent event) {
        String playerName = event.getPlayer().getName();
        
@@ -62,7 +62,7 @@ public class CWSListener implements Listener {
        }
        
        
-    }
+    }*/
        
        
     
@@ -86,6 +86,8 @@ public class CWSListener implements Listener {
    
     @EventHandler
     public void onPlayerExpChangeEvent(PlayerExpChangeEvent event) {
+    	
+    	try {
     	Player plr = event.getPlayer(); 				//get the player 
     	int experiencePoints = plr.getTotalExperience();  // get the total experience points
     	 String plrName = plr.getName();					//get the player's name 
@@ -115,12 +117,25 @@ public class CWSListener implements Listener {
         *SET column1=value, column2=value2,...
         *WHERE some_column=some_value
         */ 
+        
+    	}//end try
+    	catch(NullPointerException e){
+    		Player plr = event.getPlayer();
+    		String ply = plr.getName();
+    		
+    		plr.sendMessage("Your stats are not being recorded. Please register with our database by typing" + "/stat reg "+ ply);
+    		
+    		
+    	}
+        
     }
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event){
     	//deathIncrement = 0;
     	
-    	Player plr = event.getEntity().getPlayer();
+    	try {
+    		
+    	 Player plr = event.getEntity().getPlayer();
     	 
     	
     	 String plrName = plr.getName();					//get the player's name 
@@ -143,7 +158,13 @@ public class CWSListener implements Listener {
                 statClass.setDeaths(deaths);
                 plugin.getDatabase().save(statClass);
         	}
-        		
+    	}//end try  
+    	catch (NullPointerException e){
+    		Player plr = event.getEntity().getPlayer();
+    		String ply = plr.getName();
+    		
+    		plr.sendMessage("Your stats are not being recorded. Please register with our database by typing" + "/stat reg "+ ply);
+    	}
         	
         
     } 
@@ -181,6 +202,32 @@ public class CWSListener implements Listener {
         	
         
     } */
+    
+    
+	public void onPlayerLoginEvent(PlayerLoginEvent event){
+    		Player ply = event.getPlayer();
+    		String playerName = ply.getName();
+    		ply.sendMessage("Welcome to Castle Wars!");
+    		/*Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("Id", ply.getName()).findUnique();	
+    	
+    		
+    		if(statClass == null){
+    			statClass = new Stats();
+				statClass.setId(playerName);
+				statClass.setPlayer(ply);
+				statClass.setPlayerName(playerName);
+				statClass.setAchievements(27);
+				statClass.setXp(0);
+				statClass.setDeaths(0);
+				
+				plugin.getDatabase().save(statClass);
+				ply.sendMessage("\n" + playerName + "Your stats will be recorded.");
+    		}
+    		if(statClass.getId() == playerName){
+    			ply.sendMessage("Thanks for joining us again " + playerName + "!");
+    		}*/
+    		
+    }
     
     	
     }
