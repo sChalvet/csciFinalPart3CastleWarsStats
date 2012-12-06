@@ -12,4 +12,6 @@ commands:
   ban:
     description: bans a player from the server
     usage: /ban <player_name>
+  armor:
+    description: gives a player and iron armor set
   

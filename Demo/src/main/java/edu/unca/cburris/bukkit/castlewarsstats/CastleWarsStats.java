@@ -30,7 +30,7 @@ public class CastleWarsStats extends JavaPlugin {
 	public void onEnable() {
 		
 		PluginDescriptionFile pdfFile = this.getDescription();
-		PluginManager pm = getServer().getPluginManager();
+		//PluginManager pm = getServer().getPluginManager();
 		
 		setupDatabase();
 		
@@ -49,7 +49,7 @@ public class CastleWarsStats extends JavaPlugin {
 		
 
 		// set the command executor for sample
-		this.getCommand("ban").setExecutor(new BanExecutor(this));
+		//this.getCommand("ban").setExecutor(new BanExecutor(this));
 		this.getServer().getPluginManager().registerEvents(new CWSListener(this), this);
 	}
 

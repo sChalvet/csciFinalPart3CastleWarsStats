@@ -18,11 +18,15 @@ public class Stats{
 	@NotNull
 	private String playerName;
 	@NotNull
-	private int achievements;
+	private int damage;
+	@NotNull
+	private int damagetaken;
 	@NotNull
 	private int xp;
 	@NotNull
 	private int deaths;
+	@NotNull
+	private int kills;
 	
 	public void setId(String id){
 		this.id = id;		
@@ -58,13 +62,7 @@ public class Stats{
 		this.xp = xp;
 	}
 
-	public int getAchievements() {
-		return achievements;
-	}
 
-	public void setAchievements(int achievements) {
-		this.achievements = achievements;
-	}
 
 	public int getDeaths() {
 		return deaths;
@@ -72,6 +70,30 @@ public class Stats{
 
 	public void setDeaths(int deaths) {
 		this.deaths = deaths;
+	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
+	public int getKills() {
+		return kills;
+	}
+
+	public void setKills(int kills) {
+		this.kills = kills;
+	}
+
+	public int getDamagetaken() {
+		return damagetaken;
+	}
+
+	public void setDamagetaken(int damagetaken) {
+		this.damagetaken = damagetaken;
 	}
 
 	

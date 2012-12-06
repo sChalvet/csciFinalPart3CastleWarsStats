@@ -3,8 +3,10 @@ package edu.unca.cburris.bukkit.castlewarsstats;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.conversations.Conversation;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -12,16 +14,20 @@ import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.yaml.snakeyaml.Loader;
-
+import org.bukkit.entity.Player;
 import com.avaje.ebean.SqlUpdate;
 import com.avaje.ebeaninternal.server.type.DataBind;
 
@@ -33,36 +39,20 @@ import edu.unca.cburris.bukkit.castlewarsstats.util.ListStore;
  */
 public class CWSListener implements Listener {
     private final CastleWarsStats plugin;
-    private int count, deaths, deathIncrement = 0;
+    private int deaths, deathIncrement, damagedealt, damageTaken, kills, PlayerEntityId;
+    private String PlayersName;
     public ListStore bannedPlayers;
-    private Player player;
-   
-    
-
     /*
      * This listener needs to know about the plugin which it came from
      */
     public CWSListener(CastleWarsStats plugin) {
         // Register the listener
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+       // plugin.getServer().getPluginManager().registerEvents(this, plugin);
         
         this.plugin = plugin;
        
     }
 
-    
-   /* @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerLogin(PlayerLoginEvent event) {
-       String playerName = event.getPlayer().getName();
-       
-       if(plugin.bannedPlayers.contains(playerName)){
-    	   event.setKickMessage("You are banned from this server!");
-    	   event.setResult(Result.KICK_BANNED);
-    	   
-       }
-       
-       
-    }*/
        
        
     
@@ -83,7 +73,16 @@ public class CWSListener implements Listener {
         
         		
     }
-   
+    
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        PlayerEntityId = event.getPlayer().getEntityId();
+      
+        PlayersName= event.getPlayer().getName();
+        
+        		
+    }
+    
     @EventHandler
     public void onPlayerExpChangeEvent(PlayerExpChangeEvent event) {
     	
@@ -91,7 +90,7 @@ public class CWSListener implements Listener {
     	Player plr = event.getPlayer(); 				//get the player 
     	int experiencePoints = plr.getTotalExperience();  // get the total experience points
     	 String plrName = plr.getName();					//get the player's name 
-        plr.sendMessage(plrName + "your xp changed by: " + event.getAmount() + "your total xp is :" + experiencePoints); // test message 
+        //plr.sendMessage(plrName + "your xp changed by: " + event.getAmount() + "your total xp is :" + experiencePoints); // test message 
         
         /*
          * get the database by a unique playerName 
@@ -135,37 +134,55 @@ public class CWSListener implements Listener {
     	
     	try {
     		
-    	 Player plr = event.getEntity().getPlayer();
-    	 
-    	
-    	 String plrName = plr.getName();					//get the player's name 
-    
-        
-        	//deaths = deaths + 1;
-        	deathIncrement++;
+    		deathIncrement++;
+        	Player plr = event.getEntity().getPlayer();
+       	
+        	
+       	    String plrName = plr.getName();
         	
         	plr.sendMessage(plrName + "your deaths changed by: "+ deathIncrement  + "entity is"+ plr.getEntityId()); // test message 
-        	/*Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", plrName).findUnique();	
+        	Stats statClassD = plugin.getDatabase().find(Stats.class).where().ieq("playerName", plrName).findUnique();	
            	
-           	statClass.setDeaths(deathIncrement);
-            plugin.getDatabase().save(statClass);*/
-        	if(deathIncrement == 2){
+            statClassD.setDeaths(deathIncrement);
+            plugin.getDatabase().save(statClassD);
+        	/*if(deathIncrement == 2){
         		
-        		setDeaths(deathIncrement);
+        		//setDeaths(deathIncrement);
         		plr.sendMessage(plrName + "your deaths changed by: "+ deaths  + "entity is"+ plr.getEntityId()); // test message 
-        		Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", plrName).findUnique();	
-               	
-                statClass.setDeaths(deaths);
-                plugin.getDatabase().save(statClass);
-        	}
+        		
+        	}*/
     	}//end try  
     	catch (NullPointerException e){
     		Player plr = event.getEntity().getPlayer();
     		String ply = plr.getName();
     		
     		plr.sendMessage("Your stats are not being recorded. Please register with our database by typing" + "/stat reg "+ ply);
+    		
+    		//Player pk = event.getEntity().getKiller();
+    		//if(pk.getName() != null){
+    		//pk.sendMessage("Your stats are not being recorded. To register with our database type /stat reg playerName");
+    		//}
+    		}
+    	try{
+    	    Player pk = event.getEntity().getKiller();
+    	    if(pk == null){
+    	    	return;
+    	    }
+    	    plugin.getLogger().info("Killer is:" + event.getEntity().getKiller());
+       	    String pkName = pk.getName();
+       	    
+       	    kills++;
+       	    Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", pkName).findUnique();	
+       	  
+       	    statClass.setKills(kills);
+       	    plugin.getDatabase().save(statClass);
+       	    
+       	    
     	}
-        	
+    	catch (NullPointerException e){
+    		e.printStackTrace();
+    		//}
+    		}
         
     } 
     
@@ -177,59 +194,119 @@ public class CWSListener implements Listener {
 		
     	deathIncrement = 0;
     }
-    /*@EventHandler
-    public void onPlayerRespawnEvent(PlayerRespawnEvent event){
-    	Player plr = event.getPlayer();
-    	String plrName = plr.getName();
-    	Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", plr.getName()).findUnique();	
-        
+    @EventHandler
+    public void onPlayerDamageEntity(EntityDamageByEntityEvent event) throws NullPointerException{
+    				
     	
-    	*/
-    	// plr.sendMessage(plrName + "your deaths changed by: "+ deaths + totalDeaths + "entity is"+ plr.getEntityId()); // test message 
-                
-                /*
-                 * get the database by a unique playerName 
-                 * since this is an event listener when a player's experience changes the set the Xp column for that particular row to the updated experiencePoints.
-                 * and finally save the changes to the database. the two lines below update the SQL database however a regular sql update doesn't work...
-                 * 
-                 */
-          /*      
-        		plr.sendMessage(plrName + "your deaths changed by: "+ deaths+ "totalDeaths ="+ totalDeaths + "entity is"+ plr.getEntityId()); // test message 
-               
-                statClass.setDeaths(totalDeaths);
-                plugin.getDatabase().save(statClass);
-        	
-        	
-        
-    } */
-    
-    
-	public void onPlayerLoginEvent(PlayerLoginEvent event){
-    		Player ply = event.getPlayer();
-    		String playerName = ply.getName();
-    		ply.sendMessage("Welcome to Castle Wars!");
-    		/*Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("Id", ply.getName()).findUnique();	
+    				/*plugin.getLogger().info("UNIQUE ID is :" + event.getEntity().getEntityId());
+        			plugin.getLogger().info("Damager is:" + event.getDamager().toString());
+        			plugin.getLogger().info("Damager id is :" + event.getDamager().getUniqueId());*/
     	
-    		
-    		if(statClass == null){
-    			statClass = new Stats();
-				statClass.setId(playerName);
-				statClass.setPlayer(ply);
-				statClass.setPlayerName(playerName);
-				statClass.setAchievements(27);
-				statClass.setXp(0);
-				statClass.setDeaths(0);
-				
-				plugin.getDatabase().save(statClass);
-				ply.sendMessage("\n" + playerName + "Your stats will be recorded.");
-    		}
-    		if(statClass.getId() == playerName){
-    			ply.sendMessage("Thanks for joining us again " + playerName + "!");
-    		}*/
-    		
-    }
-    
-    	
+    				//plugin.getLogger().info("Damager is CraftPlayer:" + event.getDamager().equals(CraftPlayer));
+    			//	plugin.getLogger().info("Damager isnt Craft:" + (!event.getDamager().equals(CraftPlayer)));
+    				//plugin.getLogger().info("Is Valid:" + event.getDamager().isValid());
+    				//plugin.getLogger().info("Id is : " + event.getDamager().getEntityId() + "EntId= " + PlayerEntityId);
+    				
+        			if (event.getDamager().getEntityId() == PlayerEntityId){
+        				
+        				int damaged = event.getDamage();
+        				damagedealt = damaged + damagedealt;
+        				//plugin.getLogger().info("damaged " + damaged);
+        				//damagedealt= damagedealt +1;
+        				//plugin.getLogger().info("damagedealt " + damagedealt);
+        				String playerName = event.getDamager().getType().getName();
+        				//plugin.getLogger().info("playerName" + PlayersName);
+        				Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", PlayersName).findUnique();	
+        				//plugin.getLogger().info("statClass" + statClass);
+        		       	if(statClass == null){
+        		       		return;
+        		       	}
+        	       	    statClass.setDamage(damagedealt);
+        	       	    plugin.getDatabase().save(statClass);
+        				
+    				
+        			}
+    				
+        				else if (event.getDamager().getEntityId() != PlayerEntityId){
+						
+        			   
+        			
+        				int damageT = event.getDamage();
+        				 damageTaken = damageTaken + damageT;
+        				// plugin.getLogger().info("damage taken is : " + damageTaken);
+        				 Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", PlayersName).findUnique();	
+         				//plugin.getLogger().info("statClass" + statClass);
+         		       	if(statClass == null){
+         		       		return;
+         		       	}
+         	       	    statClass.setDamagetaken(damageTaken);
+         	       	    plugin.getDatabase().save(statClass);
+         				
+        			//do nothing?	
+        			}
+        				else {   
+        					
+        					try{ 
+        				//damageTaken = event.getDamage();
+        				 //plugin.getLogger().info("damage taken is : "+ damageTaken);
+        			}
+    			
+    			
+    			catch(NullPointerException e){
+    				e.printStackTrace();
+    			}//end catch 
+        				}
+    			
+    			
+    			
+    			
+    			//end if 
+    			}
+
+  /* @EventHandler
+   public void onPlayerHeldItemEvent(PlayerItemHeldEvent event){
+	   
+	   			Player pl =	event.getPlayer();
+	   			String playerName = pl.getName();
+	   			kills++;
+	   			
+	   			String pk = pl.getKiller().getName();
+	   
+	   			Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", pk).findUnique();	
+	   			
+	   			if(statClass == null){
+	            	throw new NullPointerException("Please register with our database. /stat reg playerName");
+	            }
+	   			
+	   			
+	            statClass.setKills(kills);
+	            plugin.getDatabase().save(statClass);
+	            
+	            plugin.getLogger().info("killer is : "+ pk);
+	            plugin.getLogger().info("# of kills : "+ kills);
+	            
+	           
+	   
+	   
+   }*/
+ 
+
+/*    
+   @EventHandler
+   public void onBlockDamageEvent(BlockDamageEvent event){
+    			
+    			String item =	event.getItemInHand().toString();
+    			Player ply = event.getPlayer();
+    			String playerName = ply.getName();
+    			
+    			ply.sendMessage("You destroyed " + event.getBlock().getType() +"with " + item + "in your hand"+ playerName);
+    				
+    	}
+  */ 
+   
+   
+   
+   
     }
     
     
