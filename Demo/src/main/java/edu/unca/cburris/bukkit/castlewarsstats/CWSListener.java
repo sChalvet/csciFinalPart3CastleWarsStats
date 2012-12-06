@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Entity;
@@ -39,7 +40,7 @@ import edu.unca.cburris.bukkit.castlewarsstats.util.ListStore;
  */
 public class CWSListener implements Listener {
     private final CastleWarsStats plugin;
-    private int deaths, deathIncrement, damagedealt, damageTaken, kills, PlayerEntityId;
+    private int deaths, deathIncrement, damagedealt, damageTaken, kills,pvpkills, PlayerEntityId;
     private String PlayersName;
     public ListStore bannedPlayers;
     /*
@@ -61,7 +62,7 @@ public class CWSListener implements Listener {
      * the entity you interact with, if it is a Creature it will give you the
      * creature Id.
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEntityEvent event) {
         final EntityType entityType = event.getRightClicked().getType();
         event.getPlayer().sendMessage(MessageFormat.format(
@@ -80,10 +81,12 @@ public class CWSListener implements Listener {
       
         PlayersName= event.getPlayer().getName();
         
+        Player p = event.getPlayer();
+        p.sendMessage(ChatColor.DARK_AQUA + "type /stat reg "+ PlayersName + "to record your stats.");
         		
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerExpChangeEvent(PlayerExpChangeEvent event) {
     	
     	try {
@@ -128,7 +131,36 @@ public class CWSListener implements Listener {
     	}
         
     }
-    @EventHandler
+    
+   /* @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) throws NullPointerException{
+    	
+    		event.getEntityType()
+    	try{	
+    		if(event.getEntity().getEntityId() != PlayerEntityId){
+    			plugin.getLogger().info("killerid is :" + event.getEntity().getKiller().getEntityId());
+    			plugin.getLogger().info("killer name :" + event.getEntity().getKiller().getName());
+        		if(event.getEntity().getKiller().getEntityId() == PlayerEntityId){
+        			kills++;
+        			String ePlayerName = event.getEntity().getKiller().getName();
+        			
+        			Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", ePlayerName).findUnique();	
+                   	if(statClass == null){
+                   		return;
+                   	}
+                    statClass.setKills(kills);
+                    plugin.getDatabase().save(statClass);
+        			
+        		}
+    	}
+    	} 	catch (NullPointerException e){
+    		e.printStackTrace();
+    		//}
+    		}
+    	
+    }*/
+    
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerDeathEvent(PlayerDeathEvent event){
     	//deathIncrement = 0;
     	
@@ -171,10 +203,10 @@ public class CWSListener implements Listener {
     	    plugin.getLogger().info("Killer is:" + event.getEntity().getKiller());
        	    String pkName = pk.getName();
        	    
-       	    kills++;
+       	    pvpkills++;
        	    Stats statClass = plugin.getDatabase().find(Stats.class).where().ieq("playerName", pkName).findUnique();	
        	  
-       	    statClass.setKills(kills);
+       	    statClass.setKills(pvpkills);
        	    plugin.getDatabase().save(statClass);
        	    
        	    
@@ -194,7 +226,7 @@ public class CWSListener implements Listener {
 		
     	deathIncrement = 0;
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDamageEntity(EntityDamageByEntityEvent event) throws NullPointerException{
     				
     	

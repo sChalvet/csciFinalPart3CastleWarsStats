@@ -98,12 +98,12 @@ public class CWSCommandExecutor implements CommandExecutor {
 						plr.sendMessage(ChatColor.RED + "You must first register to view player statistice simply type /stat reg");
 						
 					}
-					plr.sendMessage(ChatColor.DARK_AQUA + "ID is: " + statClass.getId());
+					plr.sendMessage(ChatColor.GOLD + "ID is: " + statClass.getId());
 					plr.sendMessage(ChatColor.DARK_AQUA + "Damage Dealt: " + statClass.getDamage());
 					plr.sendMessage(ChatColor.DARK_AQUA+ "Damage Taken: " + statClass.getDamagetaken());
-					plr.sendMessage(ChatColor.DARK_BLUE + "Exp is : " + statClass.getXp());
-					plr.sendMessage(ChatColor.GOLD + "Deaths : " + statClass.getDeaths());
-					plr.sendMessage(ChatColor.GREEN + "Kills : " + statClass.getKills());
+					plr.sendMessage(ChatColor.GOLD + "Exp is : " + statClass.getXp());
+					plr.sendMessage(ChatColor.GREEN + "Deaths : " + statClass.getDeaths());
+					//plr.sendMessage(ChatColor.GREEN + "Kills : " + statClass.getKills());
 				}
 		}
 		catch(ArrayIndexOutOfBoundsException ie){
